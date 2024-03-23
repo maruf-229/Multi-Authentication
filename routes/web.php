@@ -1,8 +1,19 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+//auth routes
+Route::get('admin/login', [AdminController::class, 'loginForm']);
+Route::post('admin/login', [AdminController::class, 'adminLogin'])->name('admin.login');
+
+Route::middleware('auth.auth')->group(function () {
+    Route::get('admin/dashboard', [AdminController::class,'dashboard'])->name('admin.dashboard');
+    Route::get('admin/logout',  [AdminController::class,'logout'])->name('admin.logout');
+});
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
