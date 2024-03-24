@@ -31,7 +31,7 @@ class AdminController extends Controller
         $admin = Admin::where('email', $credentials['email'])->first();
 
         if (!$admin || !Hash::check($credentials['password'], $admin->password)) {
-            return redirect()->route('login')->withErrors(['email' => 'These credentials do not match our records.'])->withInput();
+            return redirect()->route('admin.loginForm')->withErrors(['email' => 'These credentials do not match our records.'])->withInput();
         }
 
         if ($remember) {
@@ -41,12 +41,14 @@ class AdminController extends Controller
 
         Auth::guard('admin')->login($admin, $remember);
 
-        return redirect()->route('admin.dashboard');
+        //return to_route('admin.dashboard');
+        return Inertia::location(route('admin.dashboard'));
     }
 
     public function dashboard()
     {
         return view('admin.dashboard');
+        //return Inertia::render('Admin/Dashboard',['admin' => auth()->guard('admin')->user()]);
     }
 
     // Find auth by email
@@ -68,6 +70,6 @@ class AdminController extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login');
+        return to_route('login');
     }
 }

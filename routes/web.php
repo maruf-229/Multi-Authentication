@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 //auth routes
-Route::get('admin/login', [AdminController::class, 'loginForm']);
+Route::get('admin/login', [AdminController::class, 'loginForm'])->name('admin.loginForm');
 Route::post('admin/login', [AdminController::class, 'adminLogin'])->name('admin.login');
 
 Route::middleware('auth.auth')->group(function () {
